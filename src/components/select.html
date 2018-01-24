@@ -1,0 +1,39 @@
+<h1>
+  {{title}}
+</h1>
+
+<p>Type in amount and select currency:</p>
+
+<div class="slds-form-element">
+  <div class="slds-form-element__control">
+    <input type="text" id="text-input-id-1" class="slds-input" placeholder="Placeholder Text" />
+  </div>
+</div>
+
+<div class="slds-form-element" >
+  <div class="slds-form-element__control">
+    <div class="slds-select_container">
+      <select class="slds-select" id="select-01" >
+        <option *ngFor="let item of countries " [value]="item">{{item}}</option>
+      </select>
+    </div>
+  </div>
+</div>
+
+<p>Converted amount:</p>
+
+<div class="slds-form-element">
+  <div class="slds-form-element__control">
+    <input type="text" id="text-input-id-1" class="slds-input" placeholder="Placeholder Text" />
+  </div>
+</div>
+
+<div class="slds-form-element">
+  <div class="slds-form-element__control">
+    <div class="slds-select_container">
+      <select class="slds-select" id="select-01">
+        <option *ngFor="let item of countries " [value]="item">{{item}}</option>
+      </select>
+    </div>
+  </div>
+</div>
