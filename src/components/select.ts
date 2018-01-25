@@ -1,13 +1,10 @@
 import { ChangeDetectorRef } from '@angular/core';
-import { Component } from '@angular/core';
-import {
-	Input
-} from "@angular/core";
+
 
 import {FixerService} from "../data/fixer.service";
 import { Http, Response, RequestOptions, Headers } from '@angular/http';
 
-
+import {Component, NgModule,Input,ComponentFactory,ComponentRef, ComponentFactoryResolver, ViewContainerRef,  TemplateRef, ViewChild,  Output, EventEmitter} from '@angular/core'
 @Component({
   selector: 'select-lightning',
   templateUrl: './select.html',
@@ -17,6 +14,11 @@ export class SelectLightning {
 	title = 'Currency Converter!';
 
 	fixer:FixerService;
+
+	  @Input() type: string = "success";
+	  @Output() output = new EventEmitter();
+
+	latest:any;
 	@Input() public countries;
 
 
@@ -24,14 +26,29 @@ export class SelectLightning {
 
 		(this.fixer = new FixerService(http));
 
-		(this.fixer.get().subscribe((data:any)=>{
+		/*
+		this.latest = (this.fixer.retrieveStore('latest'));
+		this.latest.subscribe(async (data:any)=>{
 
-			console.log('eh',this.countries= Object.keys(JSON.parse(data._body).rates))
-
-           this.cd.markForCheck();
+			this.countries= Object.keys(JSON.parse(data._body).rates);
+			this.cd.markForCheck();
 	   })
-   );
-		console.log(this);
+		this.latest.subscribe(data => this.countries = (this.fixer.setStore(data)));
+		*/
+
+	   //})
+
+	   this.init();
+	}
+
+	async init(){
+
+			   this.latest = this.fixer.retrieveStore('latest', (data)=>{ this.countries = this.fixer.getCountries(data); });
+
+			   //console.log(this, FixerService.store)
+
+			   //await this.fixer.getCountries();
+
 
 	}
 

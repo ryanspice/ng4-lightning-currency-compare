@@ -13,6 +13,9 @@ import {SelectLightning} from "../components/select";
 
 
 @NgModule({
+	entryComponents:[
+		SelectLightning
+	],
   declarations: [
     AppComponent,
 	SelectLightning

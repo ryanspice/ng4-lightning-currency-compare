@@ -11,29 +11,63 @@ export class FixerService {
 	data:any;
 	public countries:any;
 
+	static store:any = {
+
+		latest:null
+
+	}
 
 
 	constructor(private http: Http){
 
-		console.log(this);
 
 	}
 
+	retrieveStore(key:string, callback:any){
 
-	 get(){
+		//console.log(this.get(key), FixerService.store)
+		console.log(key, FixerService.store[key]==null)
 
-	 	return this.http.get('http://api.fixer.io/latest');
+		if ((FixerService.store[key]==null)){
 
+			this.get(key).subscribe(data=>{
+
+				//FixerService.store[key] = data;
+				//console.log(FixerService.store[key]);
+				FixerService.store[key] = data;
+				callback(FixerService.store[key]);
+
+				console.log(FixerService.store);
+			});
+
+		} else {
+
+			callback(FixerService.store[key]);
+		}
+
+		console.log(FixerService.store);
+		//return this.get(key);
+		//return !FixerService.store[key]?this.get(key).subscribe(data=>{FixerService.store[key]=data, console.log(FixerService.store,data)}):FixerService.store[key];
 	}
 
-	async updateData(data){
+	setStore(data){
+
+		//console.log(Object.keys(JSON.parse(data._body).rates))
+	}
+
+	 get(api:string){
+
+	 	return this.http.get('http://api.fixer.io/'+api);
+	}
+
+	 getCountries(data){
 
 
-		this.data = await JSON.parse(data._body);
-		console.log(this.data)
+		//this.data = JSON.parse(data._body);
+		console.log(FixerService.store,Object.keys(JSON.parse(data._body).rates))
 
 
-		return this.countries = await Object.keys(this.data.rates);
+		return  Object.keys(JSON.parse(data._body).rates);
 
 
 	}
