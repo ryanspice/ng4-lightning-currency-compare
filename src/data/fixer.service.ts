@@ -49,4 +49,11 @@ export class FixerService {
 		return  Object.keys(data.rates);
 	}
 
+	/* extract countries of 'rates' from provided data  */
+
+	 public getRates(data:any){
+
+		return  (<any>Object).values(data.rates);
+	}
+
 }
