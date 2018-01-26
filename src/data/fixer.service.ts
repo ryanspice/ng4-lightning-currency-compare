@@ -1,8 +1,6 @@
 //region imports
 import { Injectable } from '@angular/core';
-import 'rxjs/add/operator/toPromise';
-import { Component } from '@angular/core';
-import { Http, Response, RequestOptions, Headers } from '@angular/http';
+import { Http, Response } from '@angular/http';
 //endregion imports
 
 @Injectable()
@@ -15,9 +13,16 @@ export class FixerService {
 
 	constructor(private http: Http){}
 
+	/* call the API */
+
+	private get(api:string){
+
+	 	return this.http.get('http://api.fixer.io/'+api);
+	}
+
 	/* call the Static store if data exists */
 
-	retrieveStore(key:string, callback:Function){
+	public retrieveStore(key:string, callback:Function){
 
 		if ((FixerService.store[key]==null)){
 
@@ -37,16 +42,9 @@ export class FixerService {
 
 	}
 
-	/* call the API */
-
-	 get(api:string){
-
-	 	return this.http.get('http://api.fixer.io/'+api);
-	}
-
 	/* extract countries of 'rates' from provided data  */
 
-	 getCountries(data:any){
+	 public getCountries(data:any){
 
 		return  Object.keys(data.rates);
 	}
