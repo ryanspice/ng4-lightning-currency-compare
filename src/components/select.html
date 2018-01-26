@@ -16,7 +16,7 @@
 <div class="slds-form-element" >
   <div class="slds-form-element__control">
     <div class="slds-select_container">
-	  <select #countryA [ngModel]="countriesSelectedA"  (ngModelChange)="countriesSelectedA = $event"  class="slds-select" id="select-01">
+	  <select #countryA [ngModel]="countriesSelectedA"  (ngModelChange)="countriesSelectedA = $event;convert('valueA', 'valueB',$event)"  class="slds-select" id="select-01">
 	      <option *ngFor="let item of countries" [ngValue]="item">{{item}}</option>
 	  </select>
     </div>
@@ -37,7 +37,7 @@
 <div class="slds-form-element">
   <div class="slds-form-element__control">
     <div class="slds-select_container">
-	  <select #countryB [ngModel]="countriesSelectedB" (input)="convert('valueB', 'valueA',$event)" (ngModelChange)="countriesSelectedB = $event"  class="slds-select" id="select-01">
+	  <select #countryB [ngModel]="countriesSelectedB" (ngModelChange)="countriesSelectedB = $event;convert('valueA', 'valueB',$event)"  class="slds-select" id="select-01">
 	      <option *ngFor="let item of countries" [ngValue]="item">{{item}}</option>
 	  </select>
     </div>
