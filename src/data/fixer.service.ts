@@ -1,75 +1,54 @@
+//region imports
 import { Injectable } from '@angular/core';
 import 'rxjs/add/operator/toPromise';
-
 import { Component } from '@angular/core';
 import { Http, Response, RequestOptions, Headers } from '@angular/http';
-
+//endregion imports
 
 @Injectable()
 export class FixerService {
-	title = 'Currency Converter!';
-	data:any;
-	public countries:any;
 
+	//Static data store for persistant data
 	static store:any = {
-
 		latest:null
-
 	}
 
+	constructor(private http: Http){}
 
-	constructor(private http: Http){
+	/* call the Static store if data exists */
 
-
-	}
-
-	retrieveStore(key:string, callback:any){
-
-		//console.log(this.get(key), FixerService.store)
-		console.log(key, FixerService.store[key]==null)
+	retrieveStore(key:string, callback:Function){
 
 		if ((FixerService.store[key]==null)){
 
 			this.get(key).subscribe(data=>{
 
-				//FixerService.store[key] = data;
-				//console.log(FixerService.store[key]);
-				FixerService.store[key] = data;
+				FixerService.store[key] = JSON.parse(data["_body"]);
+
 				callback(FixerService.store[key]);
 
-				console.log(FixerService.store);
 			});
 
 		} else {
 
 			callback(FixerService.store[key]);
+
 		}
 
-		console.log(FixerService.store);
-		//return this.get(key);
-		//return !FixerService.store[key]?this.get(key).subscribe(data=>{FixerService.store[key]=data, console.log(FixerService.store,data)}):FixerService.store[key];
 	}
 
-	setStore(data){
-
-		//console.log(Object.keys(JSON.parse(data._body).rates))
-	}
+	/* call the API */
 
 	 get(api:string){
 
 	 	return this.http.get('http://api.fixer.io/'+api);
 	}
 
-	 getCountries(data){
+	/* extract countries of 'rates' from provided data  */
 
+	 getCountries(data:any){
 
-		//this.data = JSON.parse(data._body);
-		console.log(FixerService.store,Object.keys(JSON.parse(data._body).rates))
-
-
-		return  Object.keys(JSON.parse(data._body).rates);
-
-
+		return  Object.keys(data.rates);
 	}
 
 }
