@@ -1,8 +1,14 @@
-import { ChangeDetectorRef } from '@angular/core';
 
+import {
+	FixerService
+} from "../data/fixer.service";
 
-import {FixerService} from "../data/fixer.service";
-import { Http, Response, RequestOptions, Headers } from '@angular/http';
+import {
+	Http,
+	Response,
+	RequestOptions,
+	Headers
+} from '@angular/http';
 
 import {
 	Component,
@@ -20,29 +26,24 @@ import {
 })
 export class SelectLightning {
 
-	//@ViewChild('valueA') _valueA:ElementRef;
-	@ViewChild('countryA') _countryA:ElementRef;
-	//@ViewChild('valueB') _valueB:ElementRef;
-	@ViewChild('countryB') _countryB:ElementRef;
-
-	@Output() output = new EventEmitter();
+	title = 'Currency Converter!';
 
 	fixer:FixerService;
 	private countries:Array<string>;
 	private rates:Array<number>;
+	private countriesSelectedA:any = '';
+	private countriesSelectedB:any = '';
 
 	public _valueA:string|number = '0.00';
 	public _valueB:string|number = '0.00';
 
-	countriesSelectedA:any = '';
-	countriesSelectedB:any = '';
-
 	constructor(private http: Http){ }
+
+	/* getter and setters for the ngmodels */
 
 	set valueA(value){
 
 		this._valueA = value;
-		//this.convert(value);
 	}
 
 	get valueA(){
@@ -53,20 +54,22 @@ export class SelectLightning {
 	set valueB(value){
 
 		this._valueB = value;
-		//this.convert(value);
 	}
 
 	get valueB(){
 
 		return this._valueB;
 	}
+
 	/* Initialize service then grab data */
 
 	async ngOnInit(){
 
 		this.fixer = await new FixerService(this.http);
 		await this.fixer.retrieveStore('latest', (data)=>{
+
 			this.countries = this.fixer.getCountries(data);
+
 			this.countries.push('EUR'); //Add EUR as it's default option
 			this.countriesSelectedA = this.countries[3];
 			this.countriesSelectedB = this.countries[5];
@@ -77,14 +80,14 @@ export class SelectLightning {
 
 	}
 
+	/* Convert from EUR (default) to first selected, then to second selected */
+
 	async convert(targetA:string, targetB:string, evt:Event){
 
 		let rate1:number = this.rates[this.countries.indexOf(this.countriesSelectedA)];
 		let rate2:number = this.rates[this.countries.indexOf(this.countriesSelectedB)];
 
-		let convertedNumber:number = (this[targetA]/rate1)*rate2;
-
-		this[targetB] =  (this[targetA]/rate1)*rate2;
+		this[targetB] =  ((this[targetA]/rate1)*rate2).toFixed(2);
 
 	}
 
